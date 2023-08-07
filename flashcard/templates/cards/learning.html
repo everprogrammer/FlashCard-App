@@ -1,0 +1,34 @@
+
+
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+    {% if card %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ card.question }}</h5>
+            <details>
+                <summary class="btn btn-info">Reveal Answer</summary>
+                <h6>{{ card.answer }}</h6>
+                <p>{{ card.example }}</p>
+            </details>
+            <hr>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="card_id" value="{{ card.id }}">
+                <input type="hidden" name="solved" value="1">
+                <button type="submit" class="btn btn-success">✅ I know</button>
+            </form>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="card_id" value="{{ card.id }}">
+                <input type="hidden" name="solved" value="0">
+                <button type="submit" class="btn btn-danger">❌ I don't know</button>
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <p>No cards available for learning today!</p>
+    {% endif %}
+{% endblock %}

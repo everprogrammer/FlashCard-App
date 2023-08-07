@@ -1,0 +1,23 @@
+
+
+<article class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">{{ card.question }}</h5>
+    {% if not check_card %}
+
+        <a href="{% url 'card-update' card.id %}" class="btn btn-outline-primary">
+            Edit Card
+        </a>
+    {% else %}
+        <details>
+            <summary class="btn btn-info">Reveal Answer</summary>
+            <h6>{{ card.answer }}</h6>
+            <p>{{ card.example }}</p>
+        </details>
+        <hr>
+            {% include 'cards/card_check_form.html' with solved=True %}
+            {% include 'cards/card_check_form.html' with solved=False %}
+
+    {% endif %}
+  </div>
+</article>
