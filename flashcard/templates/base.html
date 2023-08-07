@@ -22,14 +22,14 @@
         <h1>My FlashCard</h1>
         <nav>
             <a href="{% url 'card-list' %}">All Cards</a>
-            <a href="#">Continue Learning</a>
+            <a href="{% url 'learning' %}">Continue Learning</a>
         </nav> 
     </header>
   
 
     <main>
         {% block content %}
-            <h2>Continue learning: </h2>
+            <h2><a href="">Continue learning: </a></h2>
         {% endblock %}
     </main>
   </div>

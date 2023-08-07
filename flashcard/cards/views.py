@@ -39,9 +39,21 @@ class LearningView(CardListView):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            card = get_object_or_404(Card, id=form.cleaned_data['card_id'])
-            card.move(form.cleaned_data['solved'])
+            print(form.cleaned_data) 
+            card_id = form.cleaned_data['card_id']
+            solved = form.cleaned_data['solved']
+
+            card = get_object_or_404(Card, id=card_id)
+
+            # Debug prints
+            print(f"Card ID: {card_id}")
+            print(f"Solved: {solved}")
+            print(f"Current Deck Number: {card.deck.number}")
+         
+            card.move(solved)
             card.update_review_date()
+
+            print(f"New Review Date: {card.review_date}")
 
         return self.get(request, *args, **kwargs)
 

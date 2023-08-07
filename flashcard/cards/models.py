@@ -49,14 +49,13 @@ class Card(models.Model):
     def move(self, solved):
         if solved:
             # Move to the next deck
-            next_deck = Deck.objects.filter(id__gt=self.deck.id).order_by('id').first()
+            next_deck = Deck.objects.filter(number__gt=self.deck.number).first()
             if next_deck:
                 self.deck = next_deck
         else:
             # Move to the first deck
-            first_deck = Deck.objects.order_by('id').first()
-            if first_deck:
-                self.deck = first_deck
+            first_deck = Deck.objects.order_by('number').first()
+            self.deck = first_deck
 
         self.save()
         
