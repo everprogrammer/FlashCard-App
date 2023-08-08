@@ -12,8 +12,9 @@ import random
 class CardListView(ListView):
     model = Card
     queryset = Card.objects.all().order_by('deck', '-date_created')
+    paginate_by = 20
 
-class CardCreateView(CreateView):
+class CardCreateView(CreateView):   
     template_name = 'cards/new_card.html'
     model = Card
     fields = ['question', 'answer', 'example', 'deck']
@@ -41,7 +42,7 @@ class LearningView(CardListView):
         if form.is_valid():
             print(form.cleaned_data) 
             card_id = form.cleaned_data['card_id']
-            solved = form.cleaned_data['solved']
+            solved = form.cleaned_data['solved'] == 'True'   
 
             card = get_object_or_404(Card, id=card_id)
 
@@ -57,8 +58,23 @@ class LearningView(CardListView):
 
         return self.get(request, *args, **kwargs)
 
+class SearchView(ListView):
+    template_name = 'cards/search.html'
+    model = Card
+
+    def get_queryset(self):
+        search = self.request.GET.get('search', '')
+        object_list = self.model.objects.all()
+        if search:
+            object_list = object_list.filter(question__icontains=search)
+        return object_list
     
-    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search'] = self.request.GET.get('search', '')
+        return context
+
+
 # def learning_view(request):
 #     cards_to_review = Card.objects.filter(review_date__gte=datetime.today())
 #     card = random.choice(cards_to_review) if cards_to_review else None

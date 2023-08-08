@@ -15,7 +15,9 @@
             <h4> {{ card.deck|apnumber }} </h4>
         {% endifchanged %}
 
-        {% include 'cards/card.html' %}
+        {% include 'cards/card.html' with card=card%}
     {% endfor %}
+
+    {% include 'pagination.html' %}
 
 {% endblock %}

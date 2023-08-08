@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,36 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FlashCards</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-
     <style>
-        body{
+        body {
             font-family: 'Rouge Script', cursive;
         }
-       
     </style>
 </head>
 <body>
-  <div class="container"> 
-    <header>
-        <h1>My FlashCard</h1>
-        <nav>
-            <a href="{% url 'card-list' %}">All Cards</a>
-            <a href="{% url 'learning' %}">Continue Learning</a>
-        </nav> 
-    </header>
-  
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="nav-link btn-secondary" href="{% url 'card-list' %}">All Cards</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-success" href="{% url 'learning' %}" style="color: white;">Continue Learning</a>
+                    </li>
+                
+                    <!-- Add spacing between nav items -->
+                    <li class="nav-item ml-3">
+                        &nbsp;
+                    </li>
+                </ul>
 
-    <main>
+                <!-- Search bar integrated into navbar -->
+                <form action="{% url 'search' %}" method="get" class="form-inline my-2 my-lg-0">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control mr-sm-2" placeholder="Search">
+                        <div class="input-group-append">
+                            <button type="submit" name="submit" class="btn btn-outline-dark my-2 my-sm-0">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
         {% block content %}
-            <h2><a href="">Continue learning: </a></h2>
         {% endblock %}
-    </main>
-  </div>
+    </div>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

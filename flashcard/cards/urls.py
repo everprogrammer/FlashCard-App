@@ -10,5 +10,6 @@ urlpatterns = [
     path("new-card", views.CardCreateView.as_view(), name='card-create'),
     path("edit/<int:pk>", views.CardUpdateView.as_view(), name='card-update'),
     path("learning/", views.LearningView.as_view(), name='learning'),
+    path("search/", views.SearchView.as_view(), name='search')
 
 ]

@@ -1,0 +1,15 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if search %}
+<div class="row">
+    {% for card in object_list %}
+    <div class="col-md-4 mb-4">
+        {% include 'cards/card.html' %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
