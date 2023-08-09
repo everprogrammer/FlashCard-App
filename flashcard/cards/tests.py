@@ -10,6 +10,11 @@ class CardModelTest(TestCase):
         deck1 = Deck.objects.create(number=1)
         deck2 = Deck.objects.create(number=2)
         deck3 = Deck.objects.create(number=3)
+        deck4 = Deck.objects.create(number=4)
+        deck5 = Deck.objects.create(number=5)
+        deck5 = Deck.objects.create(number=6)
+
+
         self.card1 = Card.objects.create(question='What is Django?', answer='A web framework', example='Django is used to create web applications', deck=deck1)
         self.card2 = Card.objects.create(question='What is Python?', answer='A programming language', example='Python is used to write Django code', deck=deck2)
 
@@ -19,7 +24,7 @@ class CardModelTest(TestCase):
         self.assertEqual(self.card1.review_date, self.card1.date_created)
         self.assertEqual(self.card2.review_date, self.card2.date_created)
         print(f'card1 deck number = {self.card1.deck.number}')
-        print(f'card2 deck number = {self.card2.deck.number}')
+        # print(f'card2 deck number = {self.card2.deck.number}')
 
         # Update the review dates
         self.card1.update_review_date()
@@ -54,10 +59,45 @@ class CardModelTest(TestCase):
         print(f'card2 deck number = {self.card2.deck.number}')
 
         self.card1.move(solved=True)
+        self.card2.move(solved=False)
+
+        self.card1.update_review_date()
+        self.card2.update_review_date()
+
+        self.assertEqual(self.card1.review_date, self.card1.date_created + timedelta(days=25))
+        self.assertEqual(self.card2.review_date, self.card1.date_created + timedelta(days=25))
+        print(f'card1 deck number = {self.card1.deck.number}')
+
+        self.card1.move(solved=True)
         self.card2.move(solved=True)
 
         self.card1.update_review_date()
         self.card2.update_review_date()
+
+
+        self.assertEqual(self.card1.review_date, self.card1.date_created + timedelta(days=55))
+        self.assertEqual(self.card2.review_date, self.card2.date_created + timedelta(days=28))
+        print(f'card1 deck number = {self.card1.deck.number}')
+        print(f'card2 deck number = {self.card2.deck.number}')
+
+
+        self.card1.move(solved=True)
+        self.card1.update_review_date()
+
+        self.assertEqual(self.card1.review_date, self.card1.date_created + timedelta(days=420))
+        print(f'card1 deck number = {self.card1.deck.number}')
+
+        self.card1.move(solved=True)
+        self.card1.update_review_date()
+
+        self.assertEqual(self.card1.review_date, self.card1.date_created + timedelta(days=785))
+        print(f'card1 deck number = {self.card1.deck.number}')
+
+        self.card1.move(solved=False)
+        self.card1.update_review_date()
+
+        self.assertEqual(self.card1.review_date, self.card1.date_created + timedelta(days=786))
+        print(f'card1 deck number = {self.card1.deck.number}')
         
     def test_move(self):
         # Test the move method of the Card model
@@ -75,3 +115,10 @@ class CardModelTest(TestCase):
         # Check the updated deck numbers
         self.assertEqual(card1.deck.number, 2)
         self.assertEqual(card2.deck.number, 1)
+
+        card1.move(solved=True)
+        self.assertEqual(card1.deck.number, 3)
+
+        card1.move(solved=False)
+        self.assertEqual(card1.deck.number, 1)
+

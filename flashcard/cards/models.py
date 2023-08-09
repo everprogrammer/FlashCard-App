@@ -13,7 +13,6 @@ class Deck(models.Model):
     def __str__(self):
         return f'Deck ({self.number})'
     
-
 class Card(models.Model):
     question = models.CharField(max_length=100)
     answer = models.CharField(max_length=255)
@@ -41,15 +40,20 @@ class Card(models.Model):
 
     def move(self, solved):
         if solved:
-            # Move to the next deck
-            next_deck = Deck.objects.filter(number__gt=self.deck.number).first()
-            if next_deck:
-                self.deck = next_deck
-                
+            # Move to the next deck or archive
+            if self.deck.number >= 5:
+                self.deck = Deck.objects.get(number=6)
+                self.review_date = self.review_date + timedelta(days=365)
                 self.save()
+
+            else:
+                next_deck = Deck.objects.filter(number=self.deck.number+1).first()
+                if next_deck:
+                    self.deck = next_deck
+                    self.save()
         else:
             # Move to the first deck
-            first_deck = Deck.objects.order_by('number').first()
+            first_deck = Deck.objects.filter(number=1).first()
             self.deck = first_deck
 
             self.save()

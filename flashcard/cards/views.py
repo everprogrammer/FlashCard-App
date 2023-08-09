@@ -14,6 +14,23 @@ class CardListView(ListView):
     queryset = Card.objects.all().order_by('deck', '-date_created')
     paginate_by = 20
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Group cards by deck
+        grouped_cards = {}
+        total_card_count = 0
+        for card in context['object_list']:
+            if card.deck not in grouped_cards:
+                grouped_cards[card.deck] = []
+            grouped_cards[card.deck].append(card)
+            total_card_count += 1
+
+        context['grouped_cards'] = grouped_cards
+        context['total_card_count'] = total_card_count
+        # context['deck_card_counts'] = {deck: len(cards) for deck, cards in grouped_cards.items()}
+        return context
+    
 class CardCreateView(CreateView):   
     template_name = 'cards/new_card.html'
     model = Card
@@ -73,7 +90,44 @@ class SearchView(ListView):
         context = super().get_context_data(**kwargs)
         context['search'] = self.request.GET.get('search', '')
         return context
+    
+# class ArchiveView(ListView):
+#     template = 'cards/archive.html'
+#     queryset = Card.objects.filter(deck=6)
+    
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         card_list = context['object_list']
+#         return context
+    
+class ArchiveView(ListView):
+    model = Card
+    template_name = 'cards/archive.html'
+    queryset = Card.objects.filter(deck=6)    
+    context_object_name = 'card_list'
 
+class ResetDeckView(View):
+    http_method_names = ['post']
+
+    def post(self, request, card_id):
+        card = Card.objects.get(id=card_id)
+        card.deck = Deck.objects.get(number=1)
+        card.save()
+        return redirect('archive')
+
+
+    
+# class ResetDeckView(View):
+#     http_method_names = ['post']
+
+#     def post(self, request, card_id):
+#         # get the card object by id
+#         card = Card.objects.get(id=card_id)
+#         # set deck number to one
+#         card.deck = Deck.objects.get(number=1)
+
+#         card.save()
+#         return redirect(request.META.get('HTTP_REFERER'))
 
 # def learning_view(request):
 #     cards_to_review = Card.objects.filter(review_date__gte=datetime.today())

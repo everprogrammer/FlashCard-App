@@ -8,16 +8,25 @@
     
     <a href="{% url 'card-create' %}" class="btn btn-primary mb-3">
         Create New Card
-    </a>
+    </a><br><br>
 
-    {% for card in card_list %}
-        {% ifchanged %}
-            <h4> {{ card.deck|apnumber }} </h4>
-        {% endifchanged %}
+    <h5>Total Cards: {{ total_card_count }}</h5><br><br>
 
-        {% include 'cards/card.html' with card=card%}
+    {% for deck, deck_cards in grouped_cards.items %}
+        <h4>{{ deck }}</h4>
+
+        <div class="row">
+            {% for card in deck_cards %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            {% include 'cards/card.html' with card=card %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     {% endfor %}
 
     {% include 'pagination.html' %}
-
 {% endblock %}

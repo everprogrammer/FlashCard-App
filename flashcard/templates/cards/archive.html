@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            {% for card in card_list %}
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            {% include 'cards/card.html' %}
+                        </div>
+                        <div class="card-footer text-center">
+                            <form action="{% url 'reset-deck' card.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Forgot this word</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% include 'pagination.html' %}
+{% endblock %}
