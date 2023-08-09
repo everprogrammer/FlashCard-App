@@ -18,12 +18,9 @@ class Card(models.Model):
     question = models.CharField(max_length=100)
     answer = models.CharField(max_length=255)
     example = models.TextField()
-    deck = models.ManyToManyField(Deck)
+    deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
     date_created = models.DateField(auto_now_add=True)
-    review_date  = models.DateField(default=timezone.now)
-    number = models.IntegerField(default=1, validators=
-                                            [MinValueValidator(1),
-                                            MaxValueValidator(6)]) 
+    review_date  = models.DateField(default=date.today())
 
     def update_review_date(self):
         # first repition reminds after 1 day, second repition 
@@ -48,14 +45,12 @@ class Card(models.Model):
             next_deck = Deck.objects.filter(number__gt=self.deck.number).first()
             if next_deck:
                 self.deck = next_deck
-                self.number = next_deck.number
+                
                 self.save()
         else:
             # Move to the first deck
             first_deck = Deck.objects.order_by('number').first()
-
             self.deck = first_deck
-            self.number = 1
 
             self.save()
         
