@@ -2,8 +2,11 @@
 
 {% block content %}
     <div class="container mt-5">
+        <h5>Completed: {{ card_list|length }} cards</h5><br><br>
+
         <div class="row">
             {% for card in card_list %}
+
                 <div class="col-md-6 mb-4">
                     <div class="card">
                         <div class="card-body">

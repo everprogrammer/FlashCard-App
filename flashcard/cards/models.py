@@ -22,8 +22,8 @@ class Card(models.Model):
     review_date  = models.DateField(default=date.today())
 
     def update_review_date(self):
-        # first repition reminds after 1 day, second repition 
-        #.. reminds after 3 days and so on...
+        # first repition reminder after 1 day, second repition 
+        #.. reminder after 3 days and so on...
         interval_revision_mapping = {
             1: 1,
             2: 3,

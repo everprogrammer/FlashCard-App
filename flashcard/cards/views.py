@@ -45,7 +45,7 @@ class LearningView(CardListView):
     form_class = CardCheckForm
 
     def get_queryset(self):
-        return Card.objects.filter(review_date__gte=datetime.today())
+        return Card.objects.filter(review_date__lte=datetime.today())
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -64,14 +64,15 @@ class LearningView(CardListView):
             card = get_object_or_404(Card, id=card_id)
 
             # Debug prints
-            print(f"Card ID: {card_id}")
-            print(f"Solved: {solved}")
-            print(f"Current Deck Number: {card.deck.number}")
-         
+            # print(f"Card ID: {card_id}")
+            # print(f"Solved: {solved}")
+            # print(f"Current Deck Number: {card.deck.number}")
+
             card.move(solved)
             card.update_review_date()
 
-            print(f"New Review Date: {card.review_date}")
+            # Debug prints
+            # print(f"New Review Date: {card.review_date}")
 
         return self.get(request, *args, **kwargs)
 
@@ -91,15 +92,6 @@ class SearchView(ListView):
         context['search'] = self.request.GET.get('search', '')
         return context
     
-# class ArchiveView(ListView):
-#     template = 'cards/archive.html'
-#     queryset = Card.objects.filter(deck=6)
-    
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         card_list = context['object_list']
-#         return context
-    
 class ArchiveView(ListView):
     model = Card
     template_name = 'cards/archive.html'
@@ -114,38 +106,3 @@ class ResetDeckView(View):
         card.deck = Deck.objects.get(number=1)
         card.save()
         return redirect('archive')
-
-
-    
-# class ResetDeckView(View):
-#     http_method_names = ['post']
-
-#     def post(self, request, card_id):
-#         # get the card object by id
-#         card = Card.objects.get(id=card_id)
-#         # set deck number to one
-#         card.deck = Deck.objects.get(number=1)
-
-#         card.save()
-#         return redirect(request.META.get('HTTP_REFERER'))
-
-# def learning_view(request):
-#     cards_to_review = Card.objects.filter(review_date__gte=datetime.today())
-#     card = random.choice(cards_to_review) if cards_to_review else None
-
-#     if request.method == 'POST':
-#         form = CardCheckForm(request.POST)
-#         if form.is_valid():
-#             card = get_object_or_404(Card, id=form.cleaned_data['card_id'])
-#             card.move(form.cleaned_data['solved'])
-#             card.update_review_date()
-
-#     else:
-#         form = CardCheckForm(initial={'card_id': card.id} if card else None)
-
-#     context = {
-#         'card': card,
-#         'form': form,
-#     }
-
-#     return render(request, 'cards/learning.html', context)

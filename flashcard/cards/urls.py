@@ -9,5 +9,4 @@ urlpatterns = [
     path("search/", views.SearchView.as_view(), name='search'),
     path("archive/", views.ArchiveView.as_view(), name='archive'),
     path("reset/<int:card_id>", views.ResetDeckView.as_view(), name='reset-deck'),
-
 ]

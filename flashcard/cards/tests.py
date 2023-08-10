@@ -24,7 +24,6 @@ class CardModelTest(TestCase):
         self.assertEqual(self.card1.review_date, self.card1.date_created)
         self.assertEqual(self.card2.review_date, self.card2.date_created)
         print(f'card1 deck number = {self.card1.deck.number}')
-        # print(f'card2 deck number = {self.card2.deck.number}')
 
         # Update the review dates
         self.card1.update_review_date()
