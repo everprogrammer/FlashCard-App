@@ -116,4 +116,4 @@ Contributions are welcome! To contribute to the Flashcard App, follow these step
 5. Create a pull request detailing your changes.
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the MIT License!
